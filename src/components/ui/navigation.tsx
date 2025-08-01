@@ -150,10 +150,10 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
     );
 
     const mobileMenuContentClasses = cn(
-      'absolute top-0 right-0 h-full w-80 bg-surface-primary border-l border-border-primary transform transition-transform duration-300',
+      'absolute bottom-0 left-0 right-0 bg-surface-primary border-t border-border-primary transform transition-transform duration-300 rounded-t-2xl',
       {
-        'translate-x-full': !isMobileMenuOpen,
-        'translate-x-0': isMobileMenuOpen,
+        'translate-y-full': !isMobileMenuOpen,
+        'translate-y-0': isMobileMenuOpen,
       }
     );
 
@@ -328,7 +328,7 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
             onClick={() => setIsMobileMenuOpen(false)}
           />
           <div className={mobileMenuContentClasses}>
-            <div className="flex flex-col h-full">
+                          <div className="flex flex-col max-h-[80vh]">
               {/* Mobile Menu Header */}
               <div className="flex items-center justify-between p-6 border-b border-border-primary">
                 <div className={logoClasses}>
