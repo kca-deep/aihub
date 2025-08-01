@@ -204,14 +204,17 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
 
               {/* Mobile Dropdown */}
               {isActive && (
-                <div className="lg:hidden absolute top-full left-0 mt-2 w-48 bg-surface-secondary border border-border-primary rounded-lg shadow-lg">
+                <div className="lg:hidden absolute top-full left-0 mt-2 w-48 bg-surface-secondary border border-border-primary rounded-lg shadow-lg z-10">
                   <div className="py-2">
                     {item.children?.map((child, childIndex) => (
                       <Link
                         key={childIndex}
                         href={child.href}
                         className="block px-4 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-surface-tertiary/50 transition-colors duration-200"
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        onClick={() => {
+                          setIsMobileMenuOpen(false);
+                          setActiveDropdown(null);
+                        }}
                       >
                         {child.label}
                       </Link>
@@ -359,7 +362,83 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
               {/* Mobile Menu Items */}
               <div className="flex-1 overflow-y-auto p-6">
                 <div className="space-y-2">
-                  {items.map((item, index) => renderNavigationItem(item, index))}
+                  {items.map((item, index) => {
+                    const hasChildren = item.children && item.children.length > 0;
+                    const isActive = activeDropdown === item.label;
+
+                    return (
+                      <div key={index} className="relative">
+                        {hasChildren ? (
+                          <div className="relative">
+                            <button
+                              className={cn(
+                                'flex items-center justify-between w-full px-3 py-2 rounded-lg transition-colors duration-200',
+                                'text-text-secondary hover:text-text-primary',
+                                'hover:bg-surface-secondary/50'
+                              )}
+                              onClick={() => setActiveDropdown(isActive ? null : item.label)}
+                            >
+                              <span>{item.label}</span>
+                              <svg
+                                className={cn(
+                                  'w-4 h-4 transition-transform duration-200',
+                                  { 'rotate-180': isActive }
+                                )}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </button>
+
+                            {/* Mobile Dropdown */}
+                            {isActive && (
+                              <div className="mt-2 ml-4 bg-surface-secondary border border-border-primary rounded-lg shadow-lg">
+                                <div className="py-2">
+                                  {item.children?.map((child, childIndex) => (
+                                    <Link
+                                      key={childIndex}
+                                      href={child.href}
+                                      className="block px-4 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-surface-tertiary/50 transition-colors duration-200"
+                                      onClick={() => {
+                                        setIsMobileMenuOpen(false);
+                                        setActiveDropdown(null);
+                                      }}
+                                    >
+                                      {child.label}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          item.onClick ? (
+                            <button
+                              onClick={() => {
+                                item.onClick?.();
+                                setIsMobileMenuOpen(false);
+                              }}
+                              className="w-full text-left px-3 py-2 rounded-lg transition-colors duration-200 text-text-secondary hover:text-text-primary hover:bg-surface-secondary/50"
+                            >
+                              {item.label}
+                            </button>
+                          ) : (
+                            <Link
+                              href={item.href}
+                              className="block px-3 py-2 rounded-lg transition-colors duration-200 text-text-secondary hover:text-text-primary hover:bg-surface-secondary/50"
+                              target={item.external ? '_blank' : undefined}
+                              rel={item.external ? 'noopener noreferrer' : undefined}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {item.label}
+                            </Link>
+                          )
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
