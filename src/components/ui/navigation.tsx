@@ -136,8 +136,8 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
     const mobileMenuClasses = cn(
       'fixed inset-0 z-50 lg:hidden',
       {
-        'pointer-events-none': !isMobileMenuOpen,
-        'pointer-events-auto': isMobileMenuOpen,
+        'pointer-events-none opacity-0': !isMobileMenuOpen,
+        'pointer-events-auto opacity-100': isMobileMenuOpen,
       }
     );
 
@@ -325,12 +325,13 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
         </div>
 
         {/* Mobile Menu */}
-        <div className={mobileMenuClasses}>
-          <div
-            className={mobileMenuOverlayClasses}
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-          <div className={mobileMenuContentClasses}>
+        {isMobileMenuOpen && (
+          <div className={mobileMenuClasses}>
+            <div
+              className={mobileMenuOverlayClasses}
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            <div className={mobileMenuContentClasses}>
                           <div className="flex flex-col max-h-[80vh]">
               {/* Mobile Menu Header */}
               <div className="flex items-center justify-between p-6 border-b border-border-primary">
@@ -467,6 +468,7 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
             </div>
           </div>
         </div>
+        )}
       </nav>
     );
   }
