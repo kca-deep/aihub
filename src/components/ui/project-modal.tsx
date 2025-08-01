@@ -172,7 +172,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
           {/* Project Images */}
           {project.images.length > 0 && (
             <div className="space-y-4">
-              <Heading as="h3" size="small">프로젝트 이미지</Heading>
+              <Heading as="h3">프로젝트 이미지</Heading>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {project.images.map((image, index) => (
                   <div key={index} className="relative aspect-video rounded-lg overflow-hidden">
@@ -192,7 +192,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
           {/* Video */}
           {project.video && (
             <div className="space-y-4">
-              <Heading as="h3" size="small">데모 비디오</Heading>
+              <Heading as="h3">데모 비디오</Heading>
               <div className="relative aspect-video rounded-lg overflow-hidden">
                 <iframe
                   src={project.video}
@@ -206,7 +206,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
 
           {/* Long Description */}
           <div className="space-y-4">
-            <Heading as="h3" size="small">프로젝트 설명</Heading>
+            <Heading as="h3">프로젝트 설명</Heading>
             <Text color="secondary" className="leading-relaxed">
               {project.longDescription}
             </Text>
@@ -214,7 +214,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
 
           {/* Tech Stack */}
           <div className="space-y-4">
-            <Heading as="h3" size="small">기술 스택</Heading>
+            <Heading as="h3">기술 스택</Heading>
             <div className="flex flex-wrap gap-2">
               {project.tech.map((tech, index) => (
                 <span
@@ -230,7 +230,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
           {/* Team */}
           {project.team.length > 0 && (
             <div className="space-y-4">
-              <Heading as="h3" size="small">팀 구성</Heading>
+              <Heading as="h3">팀 구성</Heading>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {project.team.map((member, index) => (
                   <Card key={index} className="p-4">
@@ -290,7 +290,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
           {/* Results */}
           {project.results.length > 0 && (
             <div className="space-y-4">
-              <Heading as="h3" size="small">주요 결과</Heading>
+              <Heading as="h3">주요 결과</Heading>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {project.results.map((result, index) => (
                   <Card key={index} className="p-4 text-center">
@@ -308,7 +308,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
           {/* Links */}
           {project.links.length > 0 && (
             <div className="space-y-4">
-              <Heading as="h3" size="small">관련 링크</Heading>
+              <Heading as="h3">관련 링크</Heading>
               <div className="flex flex-wrap gap-3">
                 {project.links.map((link, index) => (
                   <a
