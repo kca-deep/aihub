@@ -136,8 +136,10 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
     const mobileMenuClasses = cn(
       'fixed inset-0 z-50 lg:hidden',
       {
-        'pointer-events-none opacity-0': !isMobileMenuOpen,
-        'pointer-events-auto opacity-100': isMobileMenuOpen,
+        'pointer-events-none': !isMobileMenuOpen,
+        'pointer-events-auto': isMobileMenuOpen,
+        'opacity-0': !isMobileMenuOpen,
+        'opacity-100': isMobileMenuOpen,
       }
     );
 
