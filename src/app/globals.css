@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Linear Design System - Global Styles */
+
+@layer base {
+  :root {
+    /* CSS Variables for Linear Design System */
+    --brand-primary: #3B82F6;
+    --brand-primary-rgb: 59, 130, 246;
+    --brand-primary-hex: #3B82F6;
+    
+    /* Background Colors */
+    --background-primary: #08090A;
+    --background-primary-rgb: 8, 9, 10;
+    --background-secondary: #141516;
+    --background-secondary-rgb: 20, 21, 22;
+    --background-tertiary: #0F1011;
+    --background-tertiary-rgb: 15, 16, 17;
+    
+    /* Surface Colors */
+    --surface-primary: #141516;
+    --surface-secondary: #282830;
+    --surface-tertiary: #3E3E44;
+    
+    /* Text Colors */
+    --text-primary: #F7F8F8;
+    --text-primary-rgb: 247, 248, 248;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: #8A8F98;
+    --text-tertiary-rgb: 138, 143, 152;
+    --text-muted: #62626D;
+    --text-muted-rgb: 98, 102, 109;
+    
+    /* Border Colors */
+    --border-primary: rgba(255, 255, 255, 0.08);
+    --border-secondary: #23252A;
+    
+    /* Neutral Colors */
+    --neutral-white: #FFFFFF;
+    --neutral-white-rgb: 255, 255, 255;
+    --neutral-gray-100: #E6E6E6;
+    --neutral-gray-200: #8A8F98;
+    --neutral-gray-300: #62626D;
+    --neutral-gray-400: #3E3E44;
+    --neutral-gray-500: #282830;
+    --neutral-gray-600: #141516;
+    --neutral-gray-700: #0F1011;
+    --neutral-gray-800: #08090A;
+  }
+
+  * {
+    @apply border-border-primary;
+  }
+
+  body {
+    @apply bg-background-primary text-text-primary font-primary;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-brand-primary/20 text-text-primary;
+  }
+
+  /* Scrollbar styles */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-surface-secondary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-surface-tertiary rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-text-tertiary;
+  }
+}
+
+@layer components {
+  /* Linear Design System Component Styles */
+  
+  /* Glass effect */
+  .glass {
+    @apply bg-surface-primary/50 backdrop-blur-md border border-border-primary/50;
+  }
+
+  /* Gradient overlays */
+  .gradient-subtle {
+    background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0) 20%);
+  }
+
+  .gradient-glass {
+    background: linear-gradient(134deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0) 55%);
+  }
+
+  .gradient-overlay {
+    background: linear-gradient(rgba(255, 255, 255, 0.1) 40%, rgba(8, 9, 10, 0.1));
+  }
+
+  .gradient-fade {
+    background: linear-gradient(to right, rgb(247, 248, 248), rgba(0, 0, 0, 0) 80%);
+  }
+
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.2s ease-out;
+  }
+
+  /* Focus ring utilities */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:ring-offset-2 focus:ring-offset-background-primary;
+  }
+
+  /* Interactive states */
+  .interactive {
+    @apply transition-all duration-200 hover:scale-105 active:scale-95;
+  }
+
+  /* Text utilities */
+  .text-gradient {
+    @apply bg-gradient-to-r from-text-primary to-text-secondary bg-clip-text text-transparent;
+  }
+
+  .text-brand-gradient {
+    @apply bg-gradient-to-r from-brand-primary to-brand-primary/80 bg-clip-text text-transparent;
+  }
+}
+
+@layer utilities {
+  /* Custom utilities for Linear Design System */
+  
+  /* Container utilities */
+  .container-linear {
+    @apply max-w-container mx-auto px-6;
+  }
+
+  /* Spacing utilities */
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  /* Layout utilities */
+  .header-height {
+    height: 64px;
+  }
+
+  /* Border radius utilities */
+  .rounded-button {
+    border-radius: 8px;
+  }
+
+  .rounded-button-large {
+    border-radius: 30px;
+  }
+
+  /* Shadow utilities */
+  .shadow-linear-sm {
+    box-shadow: rgba(0, 0, 0, 0) 0px 8px 2px 0px, rgba(0, 0, 0, 0.01) 0px 5px 2px 0px, rgba(0, 0, 0, 0.04) 0px 3px 2px 0px, rgba(0, 0, 0, 0.07) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) 0px 0px 1px 0px;
+  }
+
+  .shadow-linear-md {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 16px;
+  }
+
+  .shadow-linear-lg {
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 32px;
+  }
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} 
