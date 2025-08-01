@@ -282,7 +282,7 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
               {actions?.secondary && (
                 <Button
                   variant="ghost"
-                  size={size === 'sm' ? 'sm' : 'default'}
+                  size={size === 'sm' ? 'sm' : 'md'}
                   onClick={actions.secondary.onClick}
                 >
                   {actions.secondary.label}
@@ -291,7 +291,7 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
               {actions?.primary && (
                 <Button
                   variant="ghost"
-                  size={size === 'sm' ? 'sm' : 'default'}
+                  size={size === 'sm' ? 'sm' : 'md'}
                   onClick={actions.primary.onClick}
                 >
                   {actions.primary.label}

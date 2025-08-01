@@ -353,8 +353,8 @@ export default function ComponentsPage() {
               <Text className="mb-3 font-medium">Sizes</Text>
               <div className="flex flex-wrap gap-3">
                 <Button size="sm">Small</Button>
-                <Button size="default">Default</Button>
-                <Button size="large">Large</Button>
+                <Button size="md">Default</Button>
+                <Button size="lg">Large</Button>
               </div>
             </div>
 

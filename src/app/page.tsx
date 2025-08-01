@@ -461,14 +461,14 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               variant="primary" 
-              size="large"
+              size="lg"
               onClick={() => scrollToSection('projects')}
             >
               프로젝트 자세히 보기
             </Button>
             <Button 
               variant="secondary" 
-              size="large"
+              size="lg"
               onClick={() => scrollToSection('teams')}
             >
               팀 소개 보기

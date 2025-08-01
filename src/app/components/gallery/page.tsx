@@ -115,7 +115,7 @@ export default function GalleryPage() {
                     <CardContent className="space-y-4">
                       <Button variant="primary">Primary Button</Button>
                       <Button variant="primary" size="sm">Small</Button>
-                      <Button variant="primary" size="large">Large</Button>
+                      <Button variant="primary" size="lg">Large</Button>
                       <Button variant="primary" loading>Loading</Button>
                     </CardContent>
                   </Card>
@@ -127,7 +127,7 @@ export default function GalleryPage() {
                     <CardContent className="space-y-4">
                       <Button variant="secondary">Secondary Button</Button>
                       <Button variant="secondary" size="sm">Small</Button>
-                      <Button variant="secondary" size="large">Large</Button>
+                      <Button variant="secondary" size="lg">Large</Button>
                     </CardContent>
                   </Card>
 
@@ -138,7 +138,7 @@ export default function GalleryPage() {
                     <CardContent className="space-y-4">
                       <Button variant="ghost">Ghost Button</Button>
                       <Button variant="ghost" size="sm">Small</Button>
-                      <Button variant="ghost" size="large">Large</Button>
+                      <Button variant="ghost" size="lg">Large</Button>
                     </CardContent>
                   </Card>
                 </div>

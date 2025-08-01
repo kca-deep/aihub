@@ -11,7 +11,11 @@
       "Bash(git push:*)",
       "Bash(vercel:*)",
       "Bash(npm install:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(npx @playwright/mcp:*)",
+      "Bash(npx playwright:*)",
+      "Bash(npx @modelcontextprotocol/server-sequential-thinking:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": []
   }

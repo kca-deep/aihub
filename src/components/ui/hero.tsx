@@ -13,7 +13,7 @@ export interface HeroAction {
   href?: string;
   onClick?: () => void;
   variant?: 'primary' | 'secondary' | 'ghost';
-  size?: 'sm' | 'default' | 'large';
+  size?: 'sm' | 'md' | 'lg';
 }
 
 export interface HeroBadge {
@@ -287,7 +287,7 @@ export const Hero = React.forwardRef<HTMLDivElement, HeroProps>(
                     <Link href={primaryAction.href}>
                       <Button
                         variant={primaryAction.variant || 'primary'}
-                        size={primaryAction.size || 'large'}
+                        size={primaryAction.size || 'lg'}
                         onClick={primaryAction.onClick}
                       >
                         {primaryAction.label}
@@ -296,7 +296,7 @@ export const Hero = React.forwardRef<HTMLDivElement, HeroProps>(
                   ) : (
                     <Button
                       variant={primaryAction.variant || 'primary'}
-                      size={primaryAction.size || 'large'}
+                      size={primaryAction.size || 'lg'}
                       onClick={primaryAction.onClick}
                     >
                       {primaryAction.label}
@@ -308,7 +308,7 @@ export const Hero = React.forwardRef<HTMLDivElement, HeroProps>(
                     <Link href={secondaryAction.href}>
                       <Button
                         variant={secondaryAction.variant || 'secondary'}
-                        size={secondaryAction.size || 'large'}
+                        size={secondaryAction.size || 'lg'}
                         onClick={secondaryAction.onClick}
                       >
                         {secondaryAction.label}
@@ -317,7 +317,7 @@ export const Hero = React.forwardRef<HTMLDivElement, HeroProps>(
                   ) : (
                     <Button
                       variant={secondaryAction.variant || 'secondary'}
-                      size={secondaryAction.size || 'large'}
+                      size={secondaryAction.size || 'lg'}
                       onClick={secondaryAction.onClick}
                     >
                       {secondaryAction.label}
