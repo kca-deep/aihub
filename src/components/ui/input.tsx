@@ -41,10 +41,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         // Width
         'w-full': fullWidth,
         
-        // Variant styles
-        'bg-surface-primary text-text-primary': variant === 'default',
-        'bg-transparent text-text-primary border-2': variant === 'outlined',
-        'bg-surface-secondary text-text-primary': variant === 'filled',
+        // Variant styles - improved visibility
+        'bg-surface-secondary text-text-primary border-border-secondary': variant === 'default',
+        'bg-surface-primary text-text-primary border-2 border-border-primary': variant === 'outlined',
+        'bg-surface-tertiary text-text-primary border-border-primary': variant === 'filled',
         
         // Error state
         'border-red-500 focus:ring-red-500/50 focus:border-red-500': error,
@@ -124,10 +124,10 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         // Width
         'w-full': fullWidth,
         
-        // Variant styles
-        'bg-surface-primary text-text-primary': variant === 'default',
-        'bg-transparent text-text-primary border-2': variant === 'outlined',
-        'bg-surface-secondary text-text-primary': variant === 'filled',
+        // Variant styles - improved visibility
+        'bg-surface-secondary text-text-primary border-border-secondary': variant === 'default',
+        'bg-surface-primary text-text-primary border-2 border-border-primary': variant === 'outlined',
+        'bg-surface-tertiary text-text-primary border-border-primary': variant === 'filled',
         
         // Error state
         'border-red-500 focus:ring-red-500/50 focus:border-red-500': error,
@@ -375,10 +375,10 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         // Width
         'w-full': fullWidth,
         
-        // Variant styles
-        'bg-surface-primary text-text-primary': variant === 'default',
-        'bg-transparent text-text-primary border-2': variant === 'outlined',
-        'bg-surface-secondary text-text-primary': variant === 'filled',
+        // Variant styles - improved visibility
+        'bg-surface-secondary text-text-primary border-border-secondary': variant === 'default',
+        'bg-surface-primary text-text-primary border-2 border-border-primary': variant === 'outlined',
+        'bg-surface-tertiary text-text-primary border-border-primary': variant === 'filled',
         
         // Error state
         'border-red-500 focus:ring-red-500/50 focus:border-red-500': error,

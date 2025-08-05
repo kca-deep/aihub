@@ -1,12 +1,179 @@
 /**
  * KCA AI LAB Design System - Accessibility Utilities
- * 접근성 관련 유틸리티 함수와 상수들
+ * 접근성 향상을 위한 유틸리티 함수들
  */
 
-import { KeyboardEvent } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // =====================================
-// 1. ARIA Attributes Helpers
+// 1. Focus Management
+// =====================================
+
+/**
+ * 포커스 트랩을 위한 훅
+ */
+export const useFocusTrap = (enabled: boolean = true) => {
+  const containerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!enabled || !containerRef.current) return;
+
+    const container = containerRef.current;
+    const focusableElements = container.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstElement = focusableElements[0] as HTMLElement;
+    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Tab') {
+        if (event.shiftKey) {
+          if (document.activeElement === firstElement) {
+            event.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            event.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    };
+
+    container.addEventListener('keydown', handleKeyDown);
+    return () => container.removeEventListener('keydown', handleKeyDown);
+  }, [enabled]);
+
+  return containerRef;
+};
+
+/**
+ * 자동 포커스 훅
+ */
+export const useAutoFocus = (enabled: boolean = true) => {
+  const elementRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (enabled && elementRef.current) {
+      elementRef.current.focus();
+    }
+  }, [enabled]);
+
+  return elementRef;
+};
+
+// =====================================
+// 2. Screen Reader Support
+// =====================================
+
+/**
+ * 스크린 리더 전용 텍스트 생성
+ */
+export const createScreenReaderText = (text: string): React.ReactElement => {
+  return React.createElement('span', { className: 'sr-only' }, text);
+};
+
+/**
+ * ARIA 라벨 생성
+ */
+export const createAriaLabel = (label: string, description?: string): string => {
+  return description ? `${label}. ${description}` : label;
+};
+
+/**
+ * ARIA 설명 생성
+ */
+export const createAriaDescription = (description: string): React.ReactElement => {
+  return React.createElement('span', { 
+    id: 'aria-description', 
+    className: 'sr-only' 
+  }, description);
+};
+
+// =====================================
+// 3. Keyboard Navigation
+// =====================================
+
+/**
+ * 키보드 이벤트 키 상수
+ */
+export const KEYS = {
+  ENTER: 'Enter',
+  SPACE: ' ',
+  ESCAPE: 'Escape',
+  TAB: 'Tab',
+  ARROW_UP: 'ArrowUp',
+  ARROW_DOWN: 'ArrowDown',
+  ARROW_LEFT: 'ArrowLeft',
+  ARROW_RIGHT: 'ArrowRight',
+  HOME: 'Home',
+  END: 'End',
+  PAGE_UP: 'PageUp',
+  PAGE_DOWN: 'PageDown',
+} as const;
+
+/**
+ * 키보드 이벤트 핸들러 생성
+ */
+export const createKeyboardHandler = (
+  handlers: {
+    Enter?: () => void;
+    Space?: () => void;
+    Escape?: () => void;
+    ArrowUp?: () => void;
+    ArrowDown?: () => void;
+    ArrowLeft?: () => void;
+    ArrowRight?: () => void;
+    Home?: () => void;
+    End?: () => void;
+  }
+) => {
+  return (event: React.KeyboardEvent) => {
+    const handler = handlers[event.key as keyof typeof handlers];
+    if (handler) {
+      event.preventDefault();
+      handler();
+    }
+  };
+};
+
+/**
+ * 키보드 접근성 훅
+ */
+export const useKeyboardAccessibility = (
+  onEnter?: () => void,
+  onSpace?: () => void,
+  onEscape?: () => void
+) => {
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    switch (event.key) {
+      case 'Enter':
+        if (onEnter) {
+          event.preventDefault();
+          onEnter();
+        }
+        break;
+      case ' ':
+        if (onSpace) {
+          event.preventDefault();
+          onSpace();
+        }
+        break;
+      case 'Escape':
+        if (onEscape) {
+          event.preventDefault();
+          onEscape();
+        }
+        break;
+    }
+  };
+
+  return handleKeyDown;
+};
+
+// =====================================
+// 4. ARIA Attributes Helpers
 // =====================================
 
 /**
@@ -96,294 +263,42 @@ export const getTabPanelA11yProps = (props: {
 });
 
 // =====================================
-// 2. Keyboard Navigation Helpers
+// 5. Color Contrast
 // =====================================
 
 /**
- * 키보드 이벤트 키 상수
+ * 색상 대비 계산
  */
-export const KEYS = {
-  ENTER: 'Enter',
-  SPACE: ' ',
-  ESCAPE: 'Escape',
-  TAB: 'Tab',
-  ARROW_UP: 'ArrowUp',
-  ARROW_DOWN: 'ArrowDown',
-  ARROW_LEFT: 'ArrowLeft',
-  ARROW_RIGHT: 'ArrowRight',
-  HOME: 'Home',
-  END: 'End',
-  PAGE_UP: 'PageUp',
-  PAGE_DOWN: 'PageDown',
-} as const;
-
-/**
- * 키보드 이벤트에서 특정 키가 눌렸는지 확인
- */
-export const isKey = (event: KeyboardEvent, key: string): boolean => {
-  return event.key === key;
-};
-
-/**
- * 여러 키 중 하나가 눌렸는지 확인
- */
-export const isKeyOneOf = (event: KeyboardEvent, keys: string[]): boolean => {
-  return keys.includes(event.key);
-};
-
-/**
- * 화살표 키가 눌렸는지 확인
- */
-export const isArrowKey = (event: KeyboardEvent): boolean => {
-  return isKeyOneOf(event, [KEYS.ARROW_UP, KEYS.ARROW_DOWN, KEYS.ARROW_LEFT, KEYS.ARROW_RIGHT]);
-};
-
-/**
- * 내비게이션 키가 눌렸는지 확인
- */
-export const isNavigationKey = (event: KeyboardEvent): boolean => {
-  return isKeyOneOf(event, [
-    KEYS.ARROW_UP,
-    KEYS.ARROW_DOWN,
-    KEYS.ARROW_LEFT,
-    KEYS.ARROW_RIGHT,
-    KEYS.HOME,
-    KEYS.END,
-    KEYS.PAGE_UP,
-    KEYS.PAGE_DOWN,
-  ]);
-};
-
-/**
- * 액션 키가 눌렸는지 확인 (Enter, Space)
- */
-export const isActionKey = (event: KeyboardEvent): boolean => {
-  return isKeyOneOf(event, [KEYS.ENTER, KEYS.SPACE]);
-};
-
-/**
- * 키보드 이벤트 핸들러 생성 헬퍼
- */
-export const createKeyboardHandler = (handlers: {
-  onEnter?: () => void;
-  onSpace?: () => void;
-  onEscape?: () => void;
-  onArrowUp?: () => void;
-  onArrowDown?: () => void;
-  onArrowLeft?: () => void;
-  onArrowRight?: () => void;
-  onHome?: () => void;
-  onEnd?: () => void;
-}) => {
-  return (event: KeyboardEvent) => {
-    switch (event.key) {
-      case KEYS.ENTER:
-        handlers.onEnter?.();
-        break;
-      case KEYS.SPACE:
-        event.preventDefault(); // 스크롤 방지
-        handlers.onSpace?.();
-        break;
-      case KEYS.ESCAPE:
-        handlers.onEscape?.();
-        break;
-      case KEYS.ARROW_UP:
-        event.preventDefault();
-        handlers.onArrowUp?.();
-        break;
-      case KEYS.ARROW_DOWN:
-        event.preventDefault();
-        handlers.onArrowDown?.();
-        break;
-      case KEYS.ARROW_LEFT:
-        handlers.onArrowLeft?.();
-        break;
-      case KEYS.ARROW_RIGHT:
-        handlers.onArrowRight?.();
-        break;
-      case KEYS.HOME:
-        event.preventDefault();
-        handlers.onHome?.();
-        break;
-      case KEYS.END:
-        event.preventDefault();
-        handlers.onEnd?.();
-        break;
-    }
-  };
-};
-
-// =====================================
-// 3. Focus Management Helpers
-// =====================================
-
-/**
- * 요소에 포커스 설정
- */
-export const setFocus = (element: HTMLElement | null, options?: FocusOptions): void => {
-  if (element) {
-    element.focus(options);
-  }
-};
-
-/**
- * 다음 틱에서 포커스 설정 (DOM 업데이트 후)
- */
-export const setFocusAsync = (element: HTMLElement | null, options?: FocusOptions): void => {
-  requestAnimationFrame(() => {
-    setFocus(element, options);
-  });
-};
-
-/**
- * 첫 번째 포커스 가능한 요소 찾기
- */
-export const getFirstFocusableElement = (container: HTMLElement): HTMLElement | null => {
-  const focusableElements = getFocusableElements(container);
-  return focusableElements[0] || null;
-};
-
-/**
- * 마지막 포커스 가능한 요소 찾기
- */
-export const getLastFocusableElement = (container: HTMLElement): HTMLElement | null => {
-  const focusableElements = getFocusableElements(container);
-  return focusableElements[focusableElements.length - 1] || null;
-};
-
-/**
- * 컨테이너 내의 모든 포커스 가능한 요소 찾기
- */
-export const getFocusableElements = (container: HTMLElement): HTMLElement[] => {
-  const focusableSelectors = [
-    'button:not([disabled])',
-    'input:not([disabled])',
-    'select:not([disabled])',
-    'textarea:not([disabled])',
-    '[tabindex]:not([tabindex="-1"])',
-    'a[href]',
-    '[contenteditable="true"]',
-  ].join(', ');
-
-  return Array.from(container.querySelectorAll(focusableSelectors)) as HTMLElement[];
-};
-
-/**
- * 포커스 트랩 생성 (모달 등에서 사용)
- */
-export const createFocusTrap = (container: HTMLElement) => {
-  const focusableElements = getFocusableElements(container);
-  const firstElement = focusableElements[0];
-  const lastElement = focusableElements[focusableElements.length - 1];
-
-  const trapFocus = (event: KeyboardEvent) => {
-    if (event.key !== KEYS.TAB) return;
-
-    if (event.shiftKey) {
-      // Shift + Tab
-      if (document.activeElement === firstElement) {
-        event.preventDefault();
-        lastElement?.focus();
-      }
-    } else {
-      // Tab
-      if (document.activeElement === lastElement) {
-        event.preventDefault();
-        firstElement?.focus();
-      }
-    }
-  };
-
-  // 초기 포커스 설정
-  firstElement?.focus();
-
-  return {
-    trapFocus,
-    firstElement,
-    lastElement,
-    focusableElements,
-  };
-};
-
-// =====================================
-// 4. Screen Reader Helpers
-// =====================================
-
-/**
- * 스크린 리더를 위한 라이브 리전 생성
- */
-export const createLiveRegion = (politeness: 'polite' | 'assertive' = 'polite'): HTMLElement => {
-  const liveRegion = document.createElement('div');
-  liveRegion.setAttribute('aria-live', politeness);
-  liveRegion.setAttribute('aria-atomic', 'true');
-  liveRegion.style.position = 'absolute';
-  liveRegion.style.left = '-10000px';
-  liveRegion.style.width = '1px';
-  liveRegion.style.height = '1px';
-  liveRegion.style.overflow = 'hidden';
-  
-  document.body.appendChild(liveRegion);
-  return liveRegion;
-};
-
-/**
- * 스크린 리더에 메시지 전달
- */
-export const announceToScreenReader = (
-  message: string,
-  politeness: 'polite' | 'assertive' = 'polite'
-): void => {
-  const liveRegion = createLiveRegion(politeness);
-  liveRegion.textContent = message;
-  
-  // 메시지 전달 후 제거
-  setTimeout(() => {
-    document.body.removeChild(liveRegion);
-  }, 1000);
-};
-
-// =====================================
-// 5. Color Contrast Helpers
-// =====================================
-
-/**
- * 색상 대비율 계산
- */
-export const calculateContrastRatio = (color1: string, color2: string): number => {
+export const calculateContrastRatio = (
+  foreground: string,
+  background: string
+): number => {
   const getLuminance = (color: string): number => {
-    // 간단한 RGB 색상만 지원 (실제로는 더 복잡한 계산 필요)
-    const rgb = color.match(/\d+/g);
-    if (!rgb || rgb.length < 3) return 0;
-    
-    const [r, g, b] = rgb.map(Number);
-    const normalize = (c: number) => {
+    const rgb = color.match(/\d+/g)?.map(Number);
+    if (!rgb || rgb.length !== 3) return 0;
+
+    const [r, g, b] = rgb.map(c => {
       c = c / 255;
       return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-    };
-    
-    return 0.2126 * normalize(r) + 0.7152 * normalize(g) + 0.0722 * normalize(b);
+    });
+
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
   };
 
-  const l1 = getLuminance(color1);
-  const l2 = getLuminance(color2);
+  const l1 = getLuminance(foreground);
+  const l2 = getLuminance(background);
   const lighter = Math.max(l1, l2);
   const darker = Math.min(l1, l2);
-  
+
   return (lighter + 0.05) / (darker + 0.05);
 };
 
 /**
- * WCAG AA 기준 통과 여부 확인
+ * WCAG AA 표준 충족 여부 확인
  */
-export const meetsWCAGAA = (color1: string, color2: string): boolean => {
-  return calculateContrastRatio(color1, color2) >= 4.5;
-};
-
-/**
- * WCAG AAA 기준 통과 여부 확인
- */
-export const meetsWCAGAAA = (color1: string, color2: string): boolean => {
-  return calculateContrastRatio(color1, color2) >= 7;
+export const meetsWCAGAA = (contrastRatio: number, isLargeText: boolean = false): boolean => {
+  const minimumRatio = isLargeText ? 3 : 4.5;
+  return contrastRatio >= minimumRatio;
 };
 
 // =====================================
@@ -393,80 +308,120 @@ export const meetsWCAGAAA = (color1: string, color2: string): boolean => {
 /**
  * 사용자의 모션 선호도 확인
  */
-export const prefersReducedMotion = (): boolean => {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+export const useReducedMotion = (): boolean => {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handleChange = (event: MediaQueryListEvent) => {
+      setPrefersReducedMotion(event.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  return prefersReducedMotion;
 };
 
 /**
- * 모션 감소 선호도에 따른 애니메이션 지속시간 반환
+ * 모션 선호도에 따른 애니메이션 클래스 생성
  */
-export const getAnimationDuration = (duration: number): number => {
-  return prefersReducedMotion() ? 0 : duration;
+export const createMotionClass = (
+  baseClass: string,
+  motionClass: string,
+  reducedMotionClass?: string,
+  prefersReducedMotion: boolean = false
+): string => {
+  if (prefersReducedMotion) {
+    return reducedMotionClass || baseClass;
+  }
+  
+  return `${baseClass} ${motionClass}`;
 };
 
 // =====================================
-// 7. Validation Helpers
+// 7. Live Regions
 // =====================================
 
 /**
- * 접근성 요구사항 검증
+ * 라이브 리전 상태 관리
  */
-export const validateA11yRequirements = (element: HTMLElement): string[] => {
-  const issues: string[] = [];
-  
-  // 버튼에 접근 가능한 이름이 있는지 확인
-  if (element.tagName === 'BUTTON' || element.getAttribute('role') === 'button') {
-    const hasAccessibleName = 
-      element.textContent ||
-      element.getAttribute('aria-label') ||
-      element.getAttribute('aria-labelledby') ||
-      element.getAttribute('title');
+export const useLiveRegion = (role: 'polite' | 'assertive' = 'polite') => {
+  const [message, setMessage] = useState('');
+  const timeoutRef = useRef<NodeJS.Timeout>();
+
+  const announce = (text: string, duration: number = 3000) => {
+    setMessage(text);
     
-    if (!hasAccessibleName) {
-      issues.push('Button must have an accessible name');
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
-  }
-  
-  // 입력 필드에 레이블이 있는지 확인
-  if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.tagName === 'SELECT') {
-    const hasLabel = 
-      element.getAttribute('aria-label') ||
-      element.getAttribute('aria-labelledby') ||
-      document.querySelector(`label[for="${element.id}"]`);
     
-    if (!hasLabel) {
-      issues.push('Form control must have an associated label');
-    }
-  }
-  
-  return issues;
+    timeoutRef.current = setTimeout(() => {
+      setMessage('');
+    }, duration);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  return {
+    message,
+    announce,
+    liveRegionProps: {
+      'aria-live': role,
+      'aria-atomic': 'true',
+      className: 'sr-only',
+    },
+  };
 };
 
-export default {
+// =====================================
+// 8. Skip Links
+// =====================================
+
+/**
+ * 스킵 링크 컴포넌트 생성
+ */
+export const createSkipLink = (targetId: string, text: string): React.ReactElement => {
+  return React.createElement('a', {
+    href: `#${targetId}`,
+    className: 'sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-brand-primary text-white px-4 py-2 rounded z-50'
+  }, text);
+};
+
+// =====================================
+// 9. Export Accessibility Utilities
+// =====================================
+
+const accessibilityUtils = {
+  useFocusTrap,
+  useAutoFocus,
+  createScreenReaderText,
+  createAriaLabel,
+  createAriaDescription,
+  KEYS,
+  createKeyboardHandler,
+  useKeyboardAccessibility,
   getButtonA11yProps,
   getInputA11yProps,
   getModalA11yProps,
   getTabA11yProps,
   getTabPanelA11yProps,
-  KEYS,
-  isKey,
-  isKeyOneOf,
-  isArrowKey,
-  isNavigationKey,
-  isActionKey,
-  createKeyboardHandler,
-  setFocus,
-  setFocusAsync,
-  getFirstFocusableElement,
-  getLastFocusableElement,
-  getFocusableElements,
-  createFocusTrap,
-  createLiveRegion,
-  announceToScreenReader,
   calculateContrastRatio,
   meetsWCAGAA,
-  meetsWCAGAAA,
-  prefersReducedMotion,
-  getAnimationDuration,
-  validateA11yRequirements,
+  useReducedMotion,
+  createMotionClass,
+  useLiveRegion,
+  createSkipLink,
 };
+
+export default accessibilityUtils;

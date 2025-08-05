@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { 
   Hero, 
   Button, 
@@ -194,12 +195,12 @@ export default function HomePage() {
         ]}
         actions={{
           primary: { 
-            label: 'Components', 
-            href: '/components'
+            label: '프로젝트관리', 
+            href: '/projects'
           },
           secondary: { 
-            label: '팀 소개', 
-            onClick: () => scrollToSection('teams') 
+            label: 'Components', 
+            href: '/components'
           }
         }}
         variant="transparent"
@@ -257,9 +258,11 @@ export default function HomePage() {
                 <CardHeader>
                   <div className="relative mb-4">
                     <div className="w-full h-48 bg-surface-secondary rounded-lg overflow-hidden">
-                      <img 
+                      <Image 
                         src={project.image} 
                         alt={project.title}
+                        width={400}
+                        height={300}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>

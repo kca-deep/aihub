@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+import Image from 'next/image';
 import {
   Button,
   Card,
@@ -64,9 +65,11 @@ export default function ComponentsPage() {
       id: '1',
       content: (
         <div className="relative w-full h-full">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop"
             alt="Productivity dashboard"
+            width={800}
+            height={400}
             className="w-full h-full object-cover rounded-lg"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-lg flex items-end">
@@ -84,9 +87,11 @@ export default function ComponentsPage() {
       id: '2',
       content: (
         <div className="relative w-full h-full">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=400&fit=crop"
             alt="Mobile interface"
+            width={800}
+            height={400}
             className="w-full h-full object-cover rounded-lg"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-lg flex items-end">
@@ -104,9 +109,11 @@ export default function ComponentsPage() {
       id: '3',
       content: (
         <div className="relative w-full h-full">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=800&h=400&fit=crop"
             alt="Design system"
+            width={800}
+            height={400}
             className="w-full h-full object-cover rounded-lg"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-lg flex items-end">
@@ -124,9 +131,11 @@ export default function ComponentsPage() {
       id: '4',
       content: (
         <div className="relative w-full h-full">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop"
             alt="Development workflow"
+            width={800}
+            height={400}
             className="w-full h-full object-cover rounded-lg"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-lg flex items-end">
@@ -803,6 +812,124 @@ export default function ComponentsPage() {
                     { label: 'Home', href: '/' },
                     { label: 'About', href: '/about' },
                     { label: 'Contact', href: '/contact' }
+                  ]}
+                />
+              </div>
+            </div>
+
+            {/* Enhanced Mobile Navigation with Search */}
+            <div>
+              <Text className="mb-3 font-medium">Enhanced Mobile Navigation with Search</Text>
+              <div className="border border-border-primary rounded-lg overflow-hidden">
+                <Navigation
+                  enableMobileSearch={true}
+                  currentPath="/components"
+                  items={[
+                    { 
+                      label: 'Dashboard', 
+                      href: '/dashboard',
+                      icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z" />
+                        </svg>
+                      ),
+                      description: 'Analytics and insights'
+                    },
+                    { 
+                      label: 'Products', 
+                      href: '/products',
+                      icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                      ),
+                      badge: '12',
+                      description: 'Product catalog'
+                    },
+                    { 
+                      label: 'Components', 
+                      href: '/components',
+                      icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                      ),
+                      badge: 'New',
+                      description: 'UI component library'
+                    },
+                    { 
+                      label: 'Settings', 
+                      href: '/settings',
+                      icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      ),
+                      description: 'App configuration'
+                    }
+                  ]}
+                  actions={{
+                    primary: { label: 'Get Started', onClick: () => console.log('Get Started clicked') },
+                    secondary: { label: 'Sign In', onClick: () => console.log('Sign In clicked') }
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Categorized Mobile Navigation */}
+            <div>
+              <Text className="mb-3 font-medium">Categorized Mobile Navigation</Text>
+              <div className="border border-border-primary rounded-lg overflow-hidden">
+                <Navigation
+                  mobileMenuVariant="categorized"
+                  enableMobileSearch={true}
+                  items={[
+                    { 
+                      label: 'Overview', 
+                      href: '/overview',
+                      category: 'Dashboard',
+                      icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                      ),
+                      description: 'System overview'
+                    },
+                    { 
+                      label: 'Analytics', 
+                      href: '/analytics',
+                      category: 'Dashboard',
+                      badge: 'Pro',
+                      description: 'Detailed analytics'
+                    },
+                    { 
+                      label: 'Products', 
+                      href: '/products',
+                      category: 'Commerce',
+                      badge: '45',
+                      description: 'Product management'
+                    },
+                    { 
+                      label: 'Orders', 
+                      href: '/orders',
+                      category: 'Commerce',
+                      badge: '8',
+                      description: 'Order management'
+                    },
+                    { 
+                      label: 'Profile', 
+                      href: '/profile',
+                      category: 'Account',
+                      description: 'User profile settings'
+                    },
+                    { 
+                      label: 'Security', 
+                      href: '/security',
+                      category: 'Account',
+                      description: 'Security settings'
+                    }
                   ]}
                 />
               </div>

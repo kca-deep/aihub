@@ -1,12 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Card, CardContent } from './card';
 import { Heading, Text } from './typography';
 import { Button } from './button';
 import { AIProject } from '@/lib/ai-projects';
+import { AIImageGenerator } from './ai-image-generator';
 
 export interface AIProjectCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onClick'> {
   project: AIProject;
@@ -15,6 +16,7 @@ export interface AIProjectCardProps extends Omit<React.HTMLAttributes<HTMLDivEle
   showTags?: boolean;
   showTeam?: boolean;
   showResults?: boolean;
+  onImageGenerated?: (projectId: string, imageUrl: string) => void;
 }
 
 export const AIProjectCard = React.forwardRef<HTMLDivElement, AIProjectCardProps>(
@@ -26,10 +28,27 @@ export const AIProjectCard = React.forwardRef<HTMLDivElement, AIProjectCardProps
     showTags = true,
     showTeam = false,
     showResults = false,
+    onImageGenerated,
     ...props 
   }, ref) => {
+    const [showImageGenerator, setShowImageGenerator] = useState(false);
+    const [generatedImageUrl, setGeneratedImageUrl] = useState<string>('');
+    const [imageGenerationError, setImageGenerationError] = useState<string | null>(null);
+
     const handleClick = () => {
       onClick?.(project);
+    };
+
+    const handleImageGenerated = (imageUrl: string) => {
+      setGeneratedImageUrl(imageUrl);
+      onImageGenerated?.(project.id, imageUrl);
+      setShowImageGenerator(false);
+      setImageGenerationError(null);
+    };
+
+    const handleImageGenerationError = (error: string) => {
+      setImageGenerationError(error);
+      console.error('Image generation error:', error);
     };
 
     const baseClasses = cn(
@@ -86,6 +105,8 @@ export const AIProjectCard = React.forwardRef<HTMLDivElement, AIProjectCardProps
       }
     };
 
+    const hasImage = project.thumbnail && project.thumbnail !== '';
+
     return (
       <Card ref={ref} className={baseClasses} onClick={handleClick} {...props}>
         {/* Featured Badge */}
@@ -99,13 +120,65 @@ export const AIProjectCard = React.forwardRef<HTMLDivElement, AIProjectCardProps
 
         {/* Thumbnail */}
         <div className={imageClasses}>
-          <Image
-            src={project.thumbnail}
-            alt={project.title}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+          {hasImage ? (
+            <Image
+              src={project.thumbnail}
+              alt={project.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="w-full h-full bg-surface-secondary flex items-center justify-center">
+              <div 
+                className="text-center" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  (e.nativeEvent as Event).stopImmediatePropagation();
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  (e.nativeEvent as Event).stopImmediatePropagation();
+                }}
+                onMouseUp={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  (e.nativeEvent as Event).stopImmediatePropagation();
+                }}
+              >
+                <div className="text-4xl mb-2">🎨</div>
+                <Text size="small" className="text-text-secondary mb-2">
+                  이미지 없음
+                </Text>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    (e.nativeEvent as Event).stopImmediatePropagation();
+                    setShowImageGenerator(true);
+                  }}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    (e.nativeEvent as Event).stopImmediatePropagation();
+                  }}
+                  onMouseUp={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    (e.nativeEvent as Event).stopImmediatePropagation();
+                  }}
+                  className="text-xs"
+                >
+                  AI 이미지 생성
+                </Button>
+              </div>
+            </div>
+          )}
+          
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           
           {/* Category Badge */}
@@ -134,7 +207,130 @@ export const AIProjectCard = React.forwardRef<HTMLDivElement, AIProjectCardProps
               {project.status}
             </span>
           </div>
+
+          {/* AI 이미지 재생성 버튼 (이미지가 있을 때) */}
+          {hasImage && (
+            <div 
+              className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                (e.nativeEvent as Event).stopImmediatePropagation();
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                (e.nativeEvent as Event).stopImmediatePropagation();
+              }}
+              onMouseUp={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                (e.nativeEvent as Event).stopImmediatePropagation();
+              }}
+            >
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  (e.nativeEvent as Event).stopImmediatePropagation();
+                  setShowImageGenerator(true);
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  (e.nativeEvent as Event).stopImmediatePropagation();
+                }}
+                onMouseUp={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  (e.nativeEvent as Event).stopImmediatePropagation();
+                }}
+                className="bg-surface-primary/90 text-text-primary border-border-primary"
+              >
+                🎨 재생성
+              </Button>
+            </div>
+          )}
         </div>
+
+        {/* AI 이미지 생성기 모달 */}
+        {showImageGenerator && (
+          <div 
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              (e.nativeEvent as Event).stopImmediatePropagation();
+            }}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              (e.nativeEvent as Event).stopImmediatePropagation();
+            }}
+            onMouseUp={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              (e.nativeEvent as Event).stopImmediatePropagation();
+            }}
+          >
+            <div 
+              className="bg-surface-primary rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto" 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                (e.nativeEvent as Event).stopImmediatePropagation();
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                (e.nativeEvent as Event).stopImmediatePropagation();
+              }}
+              onMouseUp={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                (e.nativeEvent as Event).stopImmediatePropagation();
+              }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <Heading as="h3">AI 이미지 생성</Heading>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    (e.nativeEvent as Event).stopImmediatePropagation();
+                    setShowImageGenerator(false);
+                  }}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    (e.nativeEvent as Event).stopImmediatePropagation();
+                  }}
+                  onMouseUp={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    (e.nativeEvent as Event).stopImmediatePropagation();
+                  }}
+                >
+                  ✕
+                </Button>
+              </div>
+              
+              <AIImageGenerator
+                type="project"
+                title={project.title}
+                description={project.description}
+                techStack={project.tags}
+                onImageGenerated={handleImageGenerated}
+                onError={handleImageGenerationError}
+                className="w-full"
+              />
+            </div>
+          </div>
+        )}
 
         {/* Content */}
         <CardContent className={contentClasses}>

@@ -37,8 +37,11 @@ export const useStableCallback = <T extends (...args: any[]) => any>(
   const callbackRef = useRef<T>(callback);
   callbackRef.current = callback;
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useCallback(
-    ((...args: Parameters<T>) => callbackRef.current(...args)) as T,
+    ((...args: Parameters<T>) => {
+      return callbackRef.current(...args);
+    }) as T,
     []
   );
 };
@@ -422,7 +425,7 @@ export const timedImport = async <T>(
 // 9. Export Performance Utilities
 // =====================================
 
-export default {
+const performanceUtils = {
   useDeepMemo,
   useStableCallback,
   usePrevious,
@@ -441,3 +444,5 @@ export default {
   trackImport,
   timedImport,
 };
+
+export default performanceUtils;

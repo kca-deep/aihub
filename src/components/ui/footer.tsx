@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Button } from './button';
 import { Heading, Text } from './typography';
@@ -166,7 +167,7 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(
             <div className="space-y-4">
               <div className={logoClasses}>
                 {logo.image ? (
-                  <img src={logo.image} alt={logo.text} className="h-8 w-auto" />
+                  <Image src={logo.image} alt={logo.text || 'Logo'} width={32} height={32} className="h-8 w-auto" />
                 ) : (
                   <Link href={logo.href || '/'}>
                     <Heading as="h2" className="text-brand-primary font-bold">

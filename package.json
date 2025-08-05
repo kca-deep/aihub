@@ -19,7 +19,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "validate": "npm run type-check && npm run lint && npm run test",
-    "prepare": "husky install || true"
+    "prepare": "husky install || true",
+    "performance": "npm run build && npm run analyze-bundle"
   },
   "dependencies": {
     "clsx": "^2.0.0",
@@ -50,7 +51,7 @@
     "@storybook/react-vite": "^7.6.6",
     "storybook": "^7.6.6",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5",
+    "typescript": "~5.3.3",
     "@next/bundle-analyzer": "^14.0.4"
   },
   "lint-staged": {

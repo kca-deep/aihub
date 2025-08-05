@@ -7,7 +7,7 @@ import { getButtonA11yProps, createKeyboardHandler, KEYS } from '@/lib/accessibi
 /**
  * Button 컴포넌트의 variant 타입
  */
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'success';
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success';
 
 /**
  * Button 컴포넌트의 size 타입
@@ -85,8 +85,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     
     // 키보드 이벤트 핸들러
     const handleKeyDown = createKeyboardHandler({
-      onEnter: onPress,
-      onSpace: onPress,
+      Enter: onPress,
+      Space: onPress,
     });
     
     // 클릭 이벤트 핸들러
@@ -122,6 +122,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         
         // Secondary variant  
         'bg-surface-primary text-text-primary border border-border-primary hover:bg-surface-secondary hover:border-border-secondary focus-visible:ring-brand-primary/50': variant === 'secondary',
+        
+        // Outline variant
+        'bg-transparent text-text-primary border border-border-primary hover:bg-surface-secondary hover:border-border-secondary focus-visible:ring-brand-primary/50': variant === 'outline',
         
         // Ghost variant
         'bg-transparent text-text-primary hover:bg-surface-primary focus-visible:ring-brand-primary/50': variant === 'ghost',

@@ -15,7 +15,10 @@
       "Bash(npx @playwright/mcp:*)",
       "Bash(npx playwright:*)",
       "Bash(npx @modelcontextprotocol/server-sequential-thinking:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "mcp__ide__executeCode",
+      "Bash(python test_enhanced_mobile_menu.py)",
+      "Bash(python test_final_enhanced_menu.py)"
     ],
     "deny": []
   }

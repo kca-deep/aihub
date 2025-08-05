@@ -142,6 +142,17 @@ export {
   type ProjectModalProps
 } from './project-modal';
 
+// AI Image Generator Component
+export {
+  AIImageGenerator,
+  type AIImageGeneratorProps
+} from './ai-image-generator';
+
+// AI Image Generation Hook
+export {
+  useImageGeneration
+} from '@/lib/ai-image';
+
 // Logo 컴포넌트
 export { Logo } from './logo';
 
@@ -176,6 +187,7 @@ export const SpecializedComponents = createExportMap({
   ProjectModal: () => import('./project-modal').then(m => m.ProjectModal),
   Carousel: () => import('./carousel').then(m => m.Carousel),
   ImageCard: () => import('./image-card').then(m => m.ImageCard),
+  AIImageGenerator: () => import('./ai-image-generator').then(m => m.AIImageGenerator),
 });
 
 // =====================================
